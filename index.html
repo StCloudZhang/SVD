@@ -346,6 +346,9 @@
             <li><strong>\(\Sigma\)</strong> (\(m \times n\)): Diagonal matrix with singular values \(\sigma_1 \ge \sigma_2 \ge ... \ge 0\).</li>
             <li><strong>V</strong> (\(n \times n\)): Right singular vectors (orthonormal columns).</li>
         </ul>
+        <div class="example-box">
+            💡 <strong>How many non-zero singular values in general?</strong> The number of non-zero singular values equals the <strong>rank</strong> of the matrix. For an \( m \times n \) matrix, the maximum number of non-zero singular values is \( \min(m, n) \). The rank can be less than this if the matrix is not full rank.
+        </div>
         <h3>🌀 Geometric Meaning of SVD Components</h3>
         <p>Any linear transformation \( \mathbf{x} \mapsto A\mathbf{x} \) can be decomposed as:</p>
         <p><strong>Rotation/Reflection</strong> (by \(V^T\)) → <strong>Scaling</strong> (by \(\Sigma\)) → <strong>Rotation</strong> (by \(U\)).</p>
@@ -367,7 +370,7 @@
         </div>
     </div>
 
-    <!-- PANEL 2: HAND CALCULATIONS (3 EXAMPLES) -->
+    <!-- PANEL 2: HAND CALCULATIONS (3 EXAMPLES) - ALL CONCLUDE WITH A = U Σ V^T -->
     <div id="example" class="panel">
         <h2>📝 Step-by-Step Hand Calculations</h2>
         
@@ -384,9 +387,10 @@
                 <div style="font-size:0.9rem;">
                     <strong>1️⃣ AᵀA =</strong> \[ \begin{bmatrix} 9 & 0 \\ 0 & 1 \end{bmatrix} \]<br>
                     <strong>2️⃣ Eigenvalues:</strong> λ₁=9, λ₂=1 → σ₁=3, σ₂=1<br>
-                    <strong>3️⃣ Right vectors V:</strong> v₁=(1,0)ᵀ, v₂=(0,1)ᵀ → V=I<br>
-                    <strong>4️⃣ Left vectors U:</strong> u₁=(1,0)ᵀ, u₂=(0,1)ᵀ → U=I<br>
-                    <strong>✅ A = U Σ Vᵀ</strong>
+                    <strong>3️⃣ Right vectors V:</strong> v₁=(1,0)ᵀ, v₂=(0,1)ᵀ → \( V = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \)<br>
+                    <strong>4️⃣ Left vectors U:</strong> u₁=(1,0)ᵀ, u₂=(0,1)ᵀ → \( U = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \)<br>
+                    <strong>5️⃣ Σ =</strong> \[ \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix} \]<br>
+                    <strong>✅ Conclusion: \( A = U \Sigma V^T = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}^T \)}</strong>
                 </div>
             </div>
 
@@ -396,9 +400,10 @@
                 <div style="font-size:0.9rem;">
                     <strong>1️⃣ AᵀA (3×3):</strong> \[ \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 2 \end{bmatrix} \]<br>
                     <strong>2️⃣ Eigenvalues:</strong> λ₁=3, λ₂=1, λ₃=0 → σ₁=√3≈1.732, σ₂=1, σ₃=0<br>
-                    <strong>3️⃣ Right vectors V:</strong> v₁=(1,1,2)/√6, v₂=(1,-1,0)/√2<br>
-                    <strong>4️⃣ Left vectors U:</strong> u₁ = A v₁/σ₁ = (2,2)/√6, u₂ = A v₂ = (1,-1)/√2<br>
-                    <strong>✅ Σ = \[ \begin{bmatrix} 1.732 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \]</strong>
+                    <strong>3️⃣ Right vectors V:</strong> v₁=(1,1,2)/√6, v₂=(1,-1,0)/√2, v₃ orthogonal → \( V = \begin{bmatrix} 1/\sqrt{6} & 1/\sqrt{2} & * \\ 1/\sqrt{6} & -1/\sqrt{2} & * \\ 2/\sqrt{6} & 0 & * \end{bmatrix} \)<br>
+                    <strong>4️⃣ Left vectors U:</strong> u₁ = A v₁/σ₁ = (2,2)/√6, u₂ = A v₂ = (1,-1)/√2 → \( U = \begin{bmatrix} 2/\sqrt{6} & 1/\sqrt{2} \\ 2/\sqrt{6} & -1/\sqrt{2} \end{bmatrix} \)<br>
+                    <strong>5️⃣ Σ =</strong> \[ \begin{bmatrix} 1.732 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \]<br>
+                    <strong>✅ Conclusion: \( A = U \Sigma V^T \)</strong>
                 </div>
             </div>
 
@@ -408,11 +413,15 @@
                 <div style="font-size:0.9rem;">
                     <strong>1️⃣ AᵀA (2×2):</strong> \[ \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} \]<br>
                     <strong>2️⃣ Eigenvalues:</strong> λ₁=3, λ₂=1 → σ₁=√3≈1.732, σ₂=1<br>
-                    <strong>3️⃣ Right vectors V:</strong> v₁=(1,1)/√2, v₂=(-1,1)/√2<br>
-                    <strong>4️⃣ Left vectors U:</strong> u₁ = A v₁/σ₁ = (1,1,2)/√6, u₂ = A v₂ = (-1,1,0)/√2<br>
-                    <strong>✅ Σ = \[ \begin{bmatrix} 1.732 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix} \]</strong>
+                    <strong>3️⃣ Right vectors V:</strong> v₁=(1,1)/√2, v₂=(-1,1)/√2 → \( V = \begin{bmatrix} 1/\sqrt{2} & -1/\sqrt{2} \\ 1/\sqrt{2} & 1/\sqrt{2} \end{bmatrix} \)<br>
+                    <strong>4️⃣ Left vectors U:</strong> u₁ = A v₁/σ₁ = (1,1,2)/√6, u₂ = A v₂ = (-1,1,0)/√2, u₃ = (1,-1,1)/√3 → \( U = \begin{bmatrix} 1/\sqrt{6} & -1/\sqrt{2} & 1/\sqrt{3} \\ 1/\sqrt{6} & 1/\sqrt{2} & -1/\sqrt{3} \\ 2/\sqrt{6} & 0 & 1/\sqrt{3} \end{bmatrix} \)<br>
+                    <strong>5️⃣ Σ =</strong> \[ \begin{bmatrix} 1.732 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix} \]<br>
+                    <strong>✅ Conclusion: \( A = U \Sigma V^T \)</strong>
                 </div>
             </div>
+        </div>
+        <div class="example-box">
+            💡 <strong>Key Observations:</strong> The number of non-zero singular values equals the rank of A. For Example 1: rank=2 (σ₁=3, σ₂=1). For Example 2: rank=2 (σ₁≈1.732, σ₂=1, σ₃=0). For Example 3: rank=2 (σ₁≈1.732, σ₂=1). In general, if rank = r, then σ₁ ≥ σ₂ ≥ ... ≥ σ_r > 0 and σ_{r+1} = ... = 0.
         </div>
     </div>
 
@@ -431,7 +440,7 @@
         <p>In fine-tuning LLaMA-7B, LoRA injects trainable low-rank matrices: h = W₀x + (α/r) B A x. This leverages the intrinsic low-rank property of weight updates — a direct SVD insight, reducing memory from 140GB to 14GB.</p>
     </div>
 
-    <!-- PANEL 4: UPLOAD DATA - FIXED SVD WITH CORRECT CALCULATIONS -->
+    <!-- PANEL 4: UPLOAD DATA - SVD WITH CORRECT CALCULATIONS -->
     <div id="upload" class="panel">
         <h2>📂 Upload Your Matrix & Compute SVD</h2>
         <div class="upload-area">
@@ -449,7 +458,7 @@
         </div>
     </div>
 
-    <!-- PANEL 5: 50-QUESTION QUIZ (ALL UNIQUE - FIXED) -->
+    <!-- PANEL 5: 50-QUESTION QUIZ (ALL UNIQUE) -->
     <div id="quiz" class="panel">
         <div class="quiz-area">
             <h2>📋 SVD Mastery Quiz — 50 Unique Questions</h2>
@@ -501,11 +510,10 @@
     document.getElementById("audioExplainBtn")?.addEventListener("click", () => speak("SVD learning suite. Theory, geometry, three hand calculation examples, 50 unique quiz questions, ML applications, upload your own matrix to see full SVD decomposition."));
     document.getElementById("stopAudioBtn")?.addEventListener("click", stopSpeaking);
 
-    // ---------- 50 UNIQUE QUIZ QUESTIONS (ALL DIFFERENT) ----------
+    // ---------- 50 UNIQUE QUIZ QUESTIONS ----------
     const questions = [];
     function addQ(text, opts, correct, expl) { questions.push({ text, options: opts, correctIndex: correct, explanation: expl }); }
     
-    // Questions 1-20: Core concepts
     addQ("What do the letters SVD stand for in linear algebra?", ["Single Value Decomposition", "Singular Value Decomposition", "Simple Vector Decomposition", "Spectral Value Decomposition"], 1, "SVD stands for Singular Value Decomposition.");
     addQ("In the SVD factorization A = UΣVᵀ, what does the matrix Σ contain?", ["Eigenvalues", "Singular values on its diagonal", "Determinants", "Covariance values"], 1, "Σ is a diagonal matrix containing the singular values σᵢ ≥ 0.");
     addQ("Which of the following is true about the singular values of any real matrix?", ["They can be negative", "They are always complex numbers", "They are always non-negative real numbers", "They are always zero"], 2, "Singular values are always non-negative real numbers.");
@@ -526,8 +534,6 @@
     addQ("What does the condition number κ(A) = σ_max / σ_min measure about a matrix?", ["The stability of linear systems involving A", "The determinant of A", "The spread of eigenvalues", "The rank deficiency"], 0, "The condition number measures sensitivity to perturbations; a high κ indicates an ill-conditioned matrix.");
     addQ("For a symmetric positive definite matrix, how does the SVD relate to its eigendecomposition?", ["They are unrelated", "U = V and Σ = Λ (the eigenvalue matrix)", "SVD gives the Jordan form", "SVD gives the LU decomposition"], 1, "For SPD matrices, SVD equals the eigendecomposition: U=V and Σ=Λ.");
     addQ("What do the columns of U that correspond to non-zero singular values span?", ["The null space of A", "The row space of A", "The column space of A", "The left nullspace of A"], 2, "The columns of U associated with positive σ span the column space of A.");
-    
-    // Questions 21-30: Calculations
     addQ("Given the diagonal matrix A = [[2,0],[0,3]], what is the largest singular value σ₁?", ["2", "3", "√13", "6"], 1, "σ₁ = 3, the larger of the two diagonal entries since A is diagonal.");
     addQ("For the rank-deficient matrix A = [[1,1],[0,0]], what is the non-zero singular value?", ["√2", "1", "2", "0"], 0, "σ = √2, from the eigenvalues of AᵀA = [[1,1],[1,1]].");
     addQ("For the matrix A = [[0,1],[0,0]], what are its singular values?", ["1 and 0", "1 and 1", "0 and 0", "0.5 and 0.5"], 0, "σ₁ = 1, σ₂ = 0 because AᵀA = [[0,0],[0,1]].");
@@ -538,8 +544,6 @@
     addQ("If σ₁ = 5 and σ₂ = 1 for a 2×2 matrix, what is its condition number κ?", ["5", "1", "0.2", "25"], 0, "κ = σ_max/σ_min = 5/1 = 5.");
     addQ("For a 2×2 matrix, what is the product of its singular values equal to?", ["|det(A)|", "trace(A)", "det(A)²", "the Frobenius norm"], 0, "The product σ₁σ₂ equals |det(A)|.");
     addQ("If the singular values of a matrix are 4, 1, and 0, what is the rank of the matrix?", ["3", "2", "1", "0"], 1, "Rank equals the number of positive singular values, which is 2.");
-    
-    // Questions 31-40: Geometry and interpretation
     addQ("What do the lengths of the semi-axes of the ellipse resulting from transforming a unit circle correspond to?", ["The singular values σᵢ", "The eigenvalues of A", "The columns of V", "The rows of U"], 0, "The semi-axis lengths are exactly the singular values.");
     addQ("Which vector points along the major axis of the output ellipse?", ["The first column of V", "The first column of U", "The first row of Σ", "The first row of V"], 1, "The first left singular vector u₁ points along the major axis.");
     addQ("What are the singular values of any rotation matrix?", ["All equal to 1", "All equal to 0", "A mix of 1 and -1", "Complex numbers"], 0, "Rotation matrices are orthogonal, so all singular values are 1.");
@@ -550,8 +554,6 @@
     addQ("What is the sum of the squares of the singular values equal to?", ["The trace of A", "The trace of AᵀA", "The determinant of A", "The condition number"], 1, "∑σᵢ² = trace(AᵀA).");
     addQ("Which property is shared between a matrix A and its transpose Aᵀ in terms of SVD?", ["The same U matrix", "The same V matrix", "The same singular values", "The same Σ dimensions"], 2, "A and Aᵀ have identical singular values.");
     addQ("For the 2×2 matrix A = [[1,2],[3,4]], how many positive singular values does it have?", ["1", "2", "0", "4"], 1, "A has full rank 2, so it has two positive singular values.");
-    
-    // Questions 41-50: Advanced and applications
     addQ("If you multiply a matrix A by the scalar 5, how do its singular values change?", ["They are multiplied by 5", "5 is added to each", "They are squared", "They remain unchanged"], 0, "Scaling a matrix by c scales all singular values by |c|.");
     addQ("If A is a 3×2 matrix, what are the dimensions of Σ in the full SVD?", ["3 × 2", "2 × 2", "3 × 3", "2 × 3"], 0, "Σ has the same dimensions as A, which is 3×2.");
     addQ("What is true about the set of left singular vectors and the set of right singular vectors?", ["They are both orthonormal sets", "They are eigenvectors of A", "They are always positive", "They form a basis only for ℝⁿ"], 0, "Both U and V have orthonormal columns.");
@@ -563,7 +565,6 @@
     addQ("Which matrix norm is equal to the largest singular value σ_max?", ["Frobenius norm", "Nuclear norm", "Spectral norm (2-norm)", "Infinity norm"], 2, "The spectral norm ||A||₂ equals σ_max.");
     addQ("The columns of U that correspond to positive singular values span which subspace?", ["The row space of A", "The column space of A", "The nullspace of Aᵀ", "The kernel of A"], 1, "The left singular vectors with σ>0 form an orthonormal basis for the column space.");
     
-    // Quiz rendering
     let userAnswers = new Array(questions.length).fill(null);
     function renderQuiz() {
         const container = document.getElementById("questionsContainer");
@@ -674,12 +675,11 @@
         ctx.fillText("A·v₂", cx+Av2x*scale+12, cy-Av2y*scale+4);
     }
     
-    // ========== CORRECT SVD FOR 2x2, 2x3, 3x2 MATRICES ==========
+    // SVD computation for user data
     function computeSVD(matrix) {
         const m = matrix.length;
         const n = matrix[0].length;
         
-        // Compute A^T * A (n x n matrix)
         const AtA = Array(n).fill().map(() => Array(n).fill(0));
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < n; j++) {
@@ -691,7 +691,6 @@
             }
         }
         
-        // Compute eigenvalues and eigenvectors of AtA (for V and singular values)
         function computeEigen2x2(mat) {
             const a = mat[0][0], b = mat[0][1], c = mat[1][0], d = mat[1][1];
             const trace = a + d;
@@ -733,7 +732,6 @@
             V = eigenvectors;
             sigma = singularValues;
         } else if (n === 3 && m === 2) {
-            // For 2x3 matrix, compute from A*A^T (2x2)
             const AAt = Array(m).fill().map(() => Array(m).fill(0));
             for (let i = 0; i < m; i++) {
                 for (let j = 0; j < m; j++) {
@@ -746,8 +744,6 @@
             }
             const { eigenvalues, eigenvectors } = computeEigen2x2(AAt);
             singularValues = eigenvalues.map(λ => Math.sqrt(Math.max(0, λ)));
-            // For V, compute from A^T * A indirectly
-            const sigmaSq = singularValues.map(s => s*s);
             const V1 = Array(n).fill().map(() => Array(n).fill(0));
             for (let j = 0; j < Math.min(singularValues.length, n); j++) {
                 if (singularValues[j] > 1e-10) {
@@ -760,7 +756,6 @@
                     }
                 }
             }
-            // Orthonormalize V
             for (let j = 0; j < singularValues.length; j++) {
                 let norm = 0;
                 for (let i = 0; i < n; i++) norm += V1[i][j] * V1[i][j];
@@ -778,7 +773,6 @@
             for(let i=1;i<n;i++) V.push([0]);
         }
         
-        // Compute U = A * V * Σ⁻¹
         const r = sigma.length;
         const U = Array(m).fill().map(() => Array(r).fill(0));
         for (let i = 0; i < m; i++) {
@@ -791,7 +785,6 @@
             }
         }
         
-        // Normalize U columns
         for (let j = 0; j < r; j++) {
             let norm = 0;
             for (let i = 0; i < m; i++) norm += U[i][j] * U[i][j];
@@ -801,7 +794,6 @@
             }
         }
         
-        // Extend U to m×m with orthonormal basis
         const Ufull = Array(m).fill().map(() => Array(m).fill(0));
         for (let i = 0; i < m; i++) {
             for (let j = 0; j < Math.min(r, m); j++) {
@@ -810,14 +802,8 @@
         }
         for (let j = r; j < m; j++) {
             Ufull[j][j] = 1;
-            for (let i = 0; i < m; i++) {
-                let dot = 0;
-                for (let k = 0; k < m; k++) dot += Ufull[k][j] * Ufull[k][j-1];
-                if (Math.abs(dot) > 0.5) Ufull[j][j] = -1;
-            }
         }
         
-        // Extend V to n×n
         const Vfull = Array(n).fill().map(() => Array(n).fill(0));
         for (let i = 0; i < n; i++) {
             for (let j = 0; j < Math.min(r, n); j++) {
